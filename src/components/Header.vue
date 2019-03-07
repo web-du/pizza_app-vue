@@ -6,7 +6,7 @@
             </router-link>
             <router-link to="/" class="navbar-brand">Pizza点餐系统</router-link>
             <ul class="navbar-nav">
-                <li><router-link to="/" class="nav-link">主页</router-link></li>
+                <li><router-link :to="{name:'homeLink'}" class="nav-link">主页</router-link></li>
                 <li><router-link to="/menu" class="nav-link">菜单</router-link></li>
                 <li><router-link to="/admin" class="nav-link">管理</router-link></li>
                 <li><router-link to="/about" class="nav-link">关于我们</router-link></li>
@@ -22,6 +22,11 @@
 
 <script>
 export default {
+    data(){
+        return {
+            homeLink:"/"
+        }
+    }
     
 }
 </script>
