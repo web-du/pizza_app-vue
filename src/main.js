@@ -3,108 +3,36 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
-
-//引入需要路由的模块
-import Home from "@/components/Home"
-import Menu from "@/components/Menu"
-import Admin from "@/components/Admin"
-import About from "@/components/about/About"
-import Login from "@/components/Login"
-import Register from "@/components/Register"
-
-//二级路由
-import Contact from "@/components/about/Contact"
-import Delivery from "@/components/about/Delivery"
-import History from "@/components/about/History"
-import OrderingGuide from "@/components/about/OrderingGuide"
-
-//三级路由
-import Phone from "@/components/about/contact/Phone"
-import PersonName from "@/components/about/contact/PersonName"
-
-
+import {routes} from './routers'
+import axios from 'axios'
+import {store} from './store/store.js'
 //使用路由
 Vue.use(VueRouter)
 
-//配置路由
-const routes = [
-  {
-    path:"/",
-    name:"homeLink",
-    component:Home
-  },
-  {
-    path:"/menu",
-    name:"menuLink",
-    component:Menu
-  },
-  {
-    path:"/admin",
-    component:Admin,
-    //路由独享首位
-    // beforeEnter:(to,from,next) => {
-    //   alert("非登陆状态，无法访问");
-    //   next("/login")
-    // }
-  },
-  {
-    path:"/about",
-    component:About,
-    redirect:'/history',
-    children:[
-      {
-        path:'/about/contact',
-        name:"contactLink",
-        component:Contact,
-        redirect:'/phone',
-        children:[
-          {
-            path:'/phone',
-            name:"phoneNumber",
-            component:Phone
-          },
-          {
-            path:'/personname',
-            name:"personName",
-            component:PersonName
-          }
-        ]
-      },
-      {
-        path:'/delivery',
-        name:"deliveryLink",
-        component:Delivery
-      },
-      {
-        path:'/history',
-        name:"historyLink",
-        component:History
-      },
-      {
-        path:'/orderingGuide',
-        name:"orderingGuideLink",
-        component:OrderingGuide
-      }
-    ]
-  },
-  {
-    path:"/login",
-    component:Login
-  },
-  {
-    path:"/register",
-    component:Register
-  },
-  {
-    path:"*",
-    redirect:'/'
-  }
-]
+
+//配置默认的根路径
+axios.defaults.baseURL = 'https://wd1522943092wgreok.wilddogio.com/'
+
+
+//配置Vue原型(在任何组件中都可以正常使用axios:this.axios)
+Vue.prototype.axios = axios;
+
 
 //把配置的路由放到实例化的路由中
 const router = new VueRouter({
   routes,
-  mode:"history" //采用h2的history跳转
+  mode:"history", //采用h5的history跳转
+  scrollBehavior(to,from,savedPosition){
+    //return{x:0,y:100}
+    // return {
+    //   selector:".btn"
+    // }
+    // if(savedPosition){
+    //   return savedPosition
+    // }else{
+    //   return {x:0,y:0}
+    // }
+  }
 })
 
 //全局守卫
@@ -138,6 +66,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
